@@ -17,13 +17,14 @@ import {
 	fontSizeOptions,
 	OptionType,
 } from 'src/constants/articleProps';
+import { useOutsideClickClose } from '../select/hooks/useOutsideClickClose';
 
 type ArticleParamsFormProps = {
 	stateForm: (formState: typeof defaultArticleState) => void;
 };
 
 export const ArticleParamsForm = ({ stateForm }: ArticleParamsFormProps) => {
-	let [open, setOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const rootRef = useRef<HTMLDivElement>(null);
 	const [selectArticleState, setselectArticleState] =
@@ -33,10 +34,20 @@ export const ArticleParamsForm = ({ stateForm }: ArticleParamsFormProps) => {
 		setselectArticleState({ ...selectArticleState, [key]: value });
 	};
 
+	useOutsideClickClose({
+		isOpen: isMenuOpen,
+		rootRef,
+		onClose: () => {
+			setIsMenuOpen(true);
+		},
+		onChange: setIsMenuOpen,
+	});
+
 	return (
 		<div ref={rootRef}>
-			<ArrowButton onClick={setOpen} open={open} />
-			<aside className={clsx(styles.container, open && styles.container_open)}>
+			<ArrowButton onClick={setIsMenuOpen} isMenuOpen={isMenuOpen} />
+			<aside
+				className={clsx(styles.container, isMenuOpen && styles.container_open)}>
 				<form
 					className={styles.form}
 					onSubmit={(e) => {
@@ -47,7 +58,7 @@ export const ArticleParamsForm = ({ stateForm }: ArticleParamsFormProps) => {
 						e.preventDefault();
 						stateForm(defaultArticleState);
 					}}>
-					<Text size={31} weight={800} uppercase>
+					<Text size={31} weight={800} uppercase as={'h2'}>
 						Задайте параметры
 					</Text>
 
@@ -62,8 +73,10 @@ export const ArticleParamsForm = ({ stateForm }: ArticleParamsFormProps) => {
 					<RadioGroup
 						name='радио-кнопка'
 						selected={selectArticleState.fontSizeOption}
-                        options={fontSizeOptions}
-                        onChange={(option) => { handleChange('fontSizeOption', option) }}
+						options={fontSizeOptions}
+						onChange={(option) => {
+							handleChange('fontSizeOption', option);
+						}}
 						title='Размер шрифта'></RadioGroup>
 
 					<Select
