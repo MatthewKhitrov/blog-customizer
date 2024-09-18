@@ -6,6 +6,8 @@
 	display: flex;
 	flex-direction: column;
 	row-gap: 4px;
+
+	/* background-color: red; */
 }
 
 .arrow {
@@ -29,6 +31,11 @@
 	cursor: pointer;
 }
 
+/* 
+:hover.placeholder {
+	outline: 3px solid #FFC802;
+} */
+
 .placeholder[data-selected='true'] {
 	color: rgb(0 0 0);
 }
@@ -44,7 +51,7 @@
 
 .selectWrapper:not([data-is-active='true'])
 	.placeholder:not([data-status='invalid']):hover {
-	outline: 3px solid #000000;
+	outline: 3px solid #ffc802;
 }
 
 .select {

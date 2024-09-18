@@ -13,6 +13,10 @@
 	transition: transform 0.5s ease;
 }
 
+:hover.container {
+	background-color: #ffc802;
+}
+
 .container_open {
 	transform: translate(616px);
 }
